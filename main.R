@@ -6,7 +6,7 @@ rm(list = ls())
 gc()
 
 # Set working directory
-setwd("C:/users/brooksd/OneDrive - World Health Organization/Documents/GitHub/diptheria_vaccination")
+setwd("C:/users/brooksd/OneDrive - World Health Organization/Documents/GitHub/covid/diptheria_vaccination")
 path_save <- "C:/Users/brooksd/OneDrive - World Health Organization/Files/03 Diphtheria/01_analysis/visuals/"
 export_visuals <- TRUE
 export_tables <- TRUE
@@ -41,8 +41,7 @@ raw_entity_details <-
 # Extract 'Big Catch Up' activity data
 raw_bcu <- data.frame(
   read_excel("input/base_bcu.xlsx",
-             sheet = "Sheet4")
-)
+             sheet = "Sheet4"))
 
 # Extract general map data
 raw_map <- map_data("world")
@@ -134,10 +133,10 @@ tran_entity_details <- tran_entity_details %>%
 # Prepare 2023 total population figures
 tran_pop <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
     AGEGROUP_FK == "ALL",
-    POP_SOURCE_FK == "UNPD2022"
+    POP_SOURCE_FK == "UNPD2024"
   ) %>%
   group_by(COUNTRY_FK) %>%
   summarize(pop = sum(VALUE, na.rm = TRUE))
@@ -145,9 +144,9 @@ tran_pop <- raw_population %>%
 # Prepare 2023 under-5 population data
 tran_pop_u5 <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
-    POP_SOURCE_FK == "UNPD2022",
+    POP_SOURCE_FK == "UNPD2024",
     AGEGROUP_FK %in% c("Y0", "Y01", "Y02", "Y03", "Y04")
   ) %>%
   group_by(COUNTRY_FK) %>%
@@ -156,9 +155,9 @@ tran_pop_u5 <- raw_population %>%
 # Prepare 2023 under-7 population data
 tran_pop_u7 <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
-    POP_SOURCE_FK == "UNPD2022",
+    POP_SOURCE_FK == "UNPD2024",
     AGEGROUP_FK %in% c("Y0", "Y01", "Y02", "Y03", "Y04", "Y05", "Y06")
   ) %>%
   group_by(COUNTRY_FK) %>%
@@ -167,9 +166,9 @@ tran_pop_u7 <- raw_population %>%
 # Prepare 2023 7-14 age range population data
 tran_pop_714 <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
-    POP_SOURCE_FK == "UNPD2022",
+    POP_SOURCE_FK == "UNPD2024",
     AGEGROUP_FK %in% c("Y07", "Y08", "Y09", "Y10", "Y11", "Y12", "Y13", "Y14")
   ) %>%
   group_by(COUNTRY_FK) %>%
@@ -178,9 +177,9 @@ tran_pop_714 <- raw_population %>%
 # Prepare 2023 under-15 population data
 tran_pop_u15 <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
-    POP_SOURCE_FK == "UNPD2022",
+    POP_SOURCE_FK == "UNPD2024",
     AGEGROUP_FK == "Y0" |
       AGEGROUP_FK == "Y01" |
       AGEGROUP_FK == "Y02" |
@@ -202,9 +201,9 @@ tran_pop_u15 <- raw_population %>%
 
 tran_pop_u15_year <- raw_population %>%
   filter(
-    YEAR == 2023,
+    YEAR == 2024,
     GENDER_FK == "BOTH",
-    POP_SOURCE_FK == "UNPD2022",
+    POP_SOURCE_FK == "UNPD2024",
     AGEGROUP_FK == "Y0" |
       AGEGROUP_FK == "Y01" |
       AGEGROUP_FK == "Y02" |
@@ -222,21 +221,21 @@ tran_pop_u15_year <- raw_population %>%
       AGEGROUP_FK == "Y14"
   ) %>%
   mutate(year = case_when(
-    AGEGROUP_FK == "Y0" ~ 2023,
-    AGEGROUP_FK == "Y01" ~ 2022,
-    AGEGROUP_FK == "Y02" ~ 2021,
-    AGEGROUP_FK == "Y03" ~ 2020,
-    AGEGROUP_FK == "Y04" ~ 2019,
-    AGEGROUP_FK == "Y05" ~ 2018,
-    AGEGROUP_FK == "Y06" ~ 2017,
-    AGEGROUP_FK == "Y07" ~ 2016,
-    AGEGROUP_FK == "Y08" ~ 2015,
-    AGEGROUP_FK == "Y09" ~ 2014,
-    AGEGROUP_FK == "Y10" ~ 2013,
-    AGEGROUP_FK == "Y11" ~ 2012,
-    AGEGROUP_FK == "Y12" ~ 2011,
-    AGEGROUP_FK == "Y13" ~ 2010,
-    AGEGROUP_FK == "Y14" ~ 2009
+    AGEGROUP_FK == "Y0" ~ 2024,
+    AGEGROUP_FK == "Y01" ~ 2023,
+    AGEGROUP_FK == "Y02" ~ 2022,
+    AGEGROUP_FK == "Y03" ~ 2021,
+    AGEGROUP_FK == "Y04" ~ 2020,
+    AGEGROUP_FK == "Y05" ~ 2019,
+    AGEGROUP_FK == "Y06" ~ 2018,
+    AGEGROUP_FK == "Y07" ~ 2017,
+    AGEGROUP_FK == "Y08" ~ 2016,
+    AGEGROUP_FK == "Y09" ~ 2015,
+    AGEGROUP_FK == "Y10" ~ 2014,
+    AGEGROUP_FK == "Y11" ~ 2013,
+    AGEGROUP_FK == "Y12" ~ 2012,
+    AGEGROUP_FK == "Y13" ~ 2011,
+    AGEGROUP_FK == "Y14" ~ 2010
   )) %>%
   select(
     COUNTRY_FK,
@@ -300,8 +299,8 @@ tran_wuenic <- raw_wuenic %>%
 tran_wuenic_dtp <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1" | code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year >= 2009) %>%
+         year_revis == 2023,
+         year >= 2010) %>%
   left_join(., tran_entity_details, by = "iso")
 
 
@@ -311,15 +310,15 @@ tran_wuenic_dtp <- tran_wuenic %>%
 tran_pop_sus_dtp1_u15_23 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1",
-         year_revis == 2022,
-         year == 2022) %>%
-  mutate(year := 2023)
+         year_revis == 2023,
+         year == 2023) %>%
+  mutate(year := 2024)
 
 tran_pop_sus_dtp1_u15 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1",
-         year_revis == 2022,
-         year >= 2009) %>%
+         year_revis == 2023,
+         year >= 2010) %>%
   rbind(., tran_pop_sus_dtp1_u15_23) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp1_new = cov * VALUE / 100,
@@ -330,15 +329,15 @@ tran_pop_sus_dtp1_u15 <- tran_wuenic %>%
 tran_pop_sus_dtp3_u15_23 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year == 2022) %>%
-  mutate(year := 2023)
+         year_revis == 2023,
+         year == 2023) %>%
+  mutate(year := 2024)
 
 tran_pop_sus_dtp3_u15 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year >= 2009) %>%
+         year_revis == 2023,
+         year >= 2010) %>%
   rbind(., tran_pop_sus_dtp3_u15_23) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp3_new = cov * VALUE / 100,
@@ -356,15 +355,15 @@ tran_pop_sus_dtp3_u15 <- tran_wuenic %>%
 tran_pop_sus_dtp1_u7_23 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1",
-         year_revis == 2022,
-         year == 2022) %>%
-  mutate(year := 2023)
+         year_revis == 2023,
+         year == 2023) %>%
+  mutate(year := 2024)
 
 tran_pop_sus_dtp1_u7 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1",
-         year_revis == 2022,
-         year >= 2017) %>%
+         year_revis == 2023,
+         year >= 2018) %>%
   rbind(., tran_pop_sus_dtp1_u7_23) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp1_u7_new = cov * VALUE / 100,
@@ -379,15 +378,15 @@ tran_pop_sus_dtp1_u7 <- tran_wuenic %>%
 tran_pop_sus_dtp3_u7_23 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year == 2022) %>%
-  mutate(year := 2023)
+         year_revis == 2023,
+         year == 2023) %>%
+  mutate(year := 2024)
 
 tran_pop_sus_dtp3_u7 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year >= 2017) %>%
+         year_revis == 2023,
+         year >= 2018) %>%
   rbind(., tran_pop_sus_dtp3_u7_23) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp3_u7_new = cov * VALUE / 100,
@@ -405,8 +404,8 @@ tran_pop_sus_dtp3_u7 <- tran_wuenic %>%
 tran_pop_sus_dtp1_714 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV1",
-         year_revis == 2022,
-         year <= 2016 & year >= 2009) %>%
+         year_revis == 2023,
+         year <= 2017 & year >= 2010) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp1_714_new = cov * VALUE / 100,
          pop_dtp1_714 = round((cov * target) / 100),
@@ -420,8 +419,8 @@ tran_pop_sus_dtp1_714 <- tran_wuenic %>%
 tran_pop_sus_dtp3_714 <- tran_wuenic %>%
   filter(cat_cov == "WUENIC",
          code_vaccine == "DTPCV3",
-         year_revis == 2022,
-         year <= 2016 & year >= 2009) %>%
+         year_revis == 2023,
+         year <= 2017 & year >= 2010) %>%
   left_join(., tran_pop_u15_year, by = c("iso" = "COUNTRY_FK", "year" = "year")) %>%
   mutate(pop_dtp3_714_new = cov * VALUE / 100,
          pop_dtp3_714 = round((cov * target) / 100),
@@ -480,8 +479,10 @@ df_1 <- left_join(tran_pop_sus_dtp1_u15, tran_pop_sus_dtp3_u15, by = c("iso", "y
   left_join(., tran_pop_u7, by = c("iso" = "COUNTRY_FK")) %>%
   left_join(., tran_pop_714, by = c("iso" = "COUNTRY_FK")) %>%
   left_join(., tran_pop_vx_23, by = "iso") %>%
-  left_join(., tran_entity_details, by = "iso") %>%
-  left_join(., tran_bcu, by = "iso")
+  left_join(., tran_entity_details, by = "iso")
+  # left_join(., tran_bcu, by = "iso")
+
+write_xlsx(df_1, "250522_DTP figures.xlsx")
 
 
 # Load - analyze ----------------------------------------------------------
